@@ -4,9 +4,18 @@
     <button @click="getData">点击请求本地后端</button>
 
     <div v-if="serverData" style="margin-top: 15px; background: #f0f0f0; padding: 10px">
-      <p>消息：{{ serverData.message }}</p>
-      <p>姓名：{{ serverData.data.name }}</p>
-      <p>时间：{{ serverData.data.time }}</p>
+      <ul>
+        <li
+          v-for="(item, index) in serverData"
+          :key="index"
+          style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px"
+        >
+          <span>姓名：{{ item.name }}</span>
+          <span>时间：{{ item.created_by }}</span>
+          <span>年龄：{{ item.age }}</span>
+          <span>工作：{{ item.job }}</span>
+        </li>
+      </ul>
     </div>
 
     <!-- 表单区域 -->
@@ -61,7 +70,7 @@ const getData = async () => {
   try {
     // 这里用相对路径 /api/users 即可，Vite 代理会转给 http://localhost:3000/api/users
     const res = await axios.get('/api/users')
-    serverData.value = res.data
+    serverData.value = res.data.data
   } catch (error) {
     console.error('请求失败：', error)
   }
